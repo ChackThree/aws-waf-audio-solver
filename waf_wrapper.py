@@ -16,7 +16,7 @@ class WafSolver():
     r = requests.post("https://aws-waf-helper.vercel.app/getAudioSolution", json={
       "audioData":audio
     })
-    solution = r.text
+    solution = r.json()["result"]
     return solution
 
   def verifyCaptcha(self, solution, data, gokuProps, locale):
