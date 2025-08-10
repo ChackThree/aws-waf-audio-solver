@@ -1,4 +1,4 @@
-import json, re
+import json, re, time
 from rnet import Impersonate, BlockingClient
 from colorama import Fore, init
 
@@ -72,6 +72,7 @@ class WafSolver():
       "captcha_voucher":voucher,
       "existing_token":None
     })
+    self.end = time.perf_counter()
     return r.json()["token"]
   
   def getAssets(self, data=None):
@@ -97,6 +98,7 @@ class WafSolver():
     return assets
 
   def solveCaptcha(self, gokuProps, domain, locale="en-us", solutionType="audio", baseUrl=None):
+    self.start = time.perf_counter()
     try:
       self.domain = domain.replace("www.", "").replace("https://", "").replace("/", "")
       self.locale = locale
@@ -113,6 +115,9 @@ class WafSolver():
         print(Fore.MAGENTA + f"[Solver] Solution: {solution}")
       voucher = self.verifyCaptcha(solution, gokuProps)
       token = self.getToken(voucher)
+      total = self.end - self.start
+      if self.logging == True:
+        print(Fore.MAGENTA + f"[Solver] Solved in {total:.2f}s")
       return token
     except Exception as e:
       #lazy error handling; temporary
