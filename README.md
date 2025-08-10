@@ -1,6 +1,6 @@
 ## Solving using AI
 - Around 90% or greater accuracy, less when using visual solutions as of now.
-- Currently, its using my own hosted endpoint to recognize assets.
+- Currently, the solver is using my own hosted endpoint to recognize assets.
 - Audio solution uses WhisperX; Visual Solution uses Google Gemini 2.5 Flash.
 
 ## Basic Usage
