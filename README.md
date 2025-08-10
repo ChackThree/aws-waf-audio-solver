@@ -18,7 +18,7 @@ r = session.get("https://huggingface.co/join")
 gokuProps = solver.getGokuProps(r.text)
 
 # Alternatively, If you wish to provide gokuProps without calling getGokuProps, add ' baseUrl ' as an additional argument
-token = solver.solveCaptcha(gokuProps, domain="huggingface.co") # audio solving is enabled by default, to use "visual" pass arg ' solutionType="visual" '
+token = solver.solveCaptcha(gokuProps, domain="huggingface.co") # visual solving is enabled by default, to use "audio" pass arg ' solutionType="audio" '
 session.headers["cookie"] = f"aws-waf-token={token}"
 print(f"Solved, token: {token}")
 
