@@ -13,7 +13,7 @@ from waf_wrapper import WafSolver
 session = cloudscraper.CloudScraper() # Use other bypassing client if you wish
 solver = WafSolver(logging=False) # ' logging ' is "True" by default
 
-# Send initial request to
+# Send initial request to extract the gokuProps
 r = session.get("https://huggingface.co/join")
 gokuProps = solver.getGokuProps(r.text)
 
