@@ -52,4 +52,4 @@ elif len(response) > 3000:
 - As seen from main.py output
 <img width="528" height="229" alt="image" src="https://github.com/user-attachments/assets/7e50e873-2f20-46ca-9a0f-f418f1a28658" />
 <br>
-<img width="528" height="269" alt="image" src="https://github.com/user-attachments/assets/fa2b0135-c860-4802-b0d7-f2871f963bf4" />
+<img width="528" height="229" alt="image" src="https://github.com/user-attachments/assets/fa2b0135-c860-4802-b0d7-f2871f963bf4" />
