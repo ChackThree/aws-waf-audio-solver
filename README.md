@@ -1,9 +1,55 @@
 ## Solving using AI
-- This is only a simple example of how you can use speech recognition / WhisperX to solve an AWS WAF captcha in roughly 5 seconds (could be less or more depending on provider of your WhisperX).
-- Around 90% or greater accuracy.
-- Currently, its using my own hosted endpoint to recognize audio which I will leave in for free for anybody to test, however it's not the fastest as I mentioned.
-- This is only a proof of concept, a real version ready for production would need more work.
+- Around 90% or greater accuracy, currently less when using visual solutions.
+- Currently, its using my own hosted endpoint to recognize assets.
+- Audio solution uses WhisperX; Visual Solution uses Google Gemini 2.5 Flash.
 
-## Working on HuggingFace
-<img width="1510" height="941" alt="image" src="https://github.com/user-attachments/assets/7b0aec5d-3342-42c9-b541-0d779cc9206c" />
-- Will add more sometime in the future
+## Basic Usage
+- Tested for HuggingFace
+- Refer to waf_wrapper.py for full usage
+```python
+import cloudscraper
+from waf_wrapper import WafSolver
+
+session = cloudscraper.CloudScraper() # Use other bypassing client if you wish
+solver = WafSolver(logging=False) # ' logging ' is "True" by default
+
+# Send initial request to
+r = session.get("https://huggingface.co/join")
+gokuProps = solver.getGokuProps(r.text)
+
+# Alternatively, If you wish to provide gokuProps without calling getGokuProps, add ' baseUrl ' as an additional argument
+token = solver.solveCaptcha(gokuProps, domain="huggingface.co") # audio solving is enabled by default, to use "visual" pass arg ' solutionType="visual" '
+session.headers["cookie"] = f"aws-waf-token={token}"
+print(f"Solved, token: {token}")
+
+# Send the request again, this time authenticated with token, check status
+r = session.get("https://huggingface.co/join")
+response = r.text
+if len(response) < 3000:
+  print("Blocked from HuggingFace")
+elif len(response) > 3000:
+  print("Allowed to access HuggingFace")
+```
+
+## Changelog
+- [8/10/2025] : main.py modernized as a proper example file & supports both captcha types.
+- [8/10/2025] : waf_wrapper.py now supports both audio and visual captcha solutions.
+- [8/10/2025] : Changed from requests/CloudScraper to rnet for faster request speeds.
+- [8/10/2025] : Changed from ``aws-waf-audio-solver`` to ``aws-waf-solver``.
+
+## TODO
+- Proxy support.
+- Better error handling.
+- All around faster solving time.
+
+## Notes
+- This project is still in development, if any issues arise please open a new issue in the issues tab.
+- The API used to get solutions is hosted by me and open to the public completely for free, enjoy.
+- Star this repo if you found it useful :)
+- More features & updates will be coming soon (check TODO).
+
+## Currently Bypassing on HuggingFace
+- As seen from main.py output
+<img width="528" height="229" alt="image" src="https://github.com/user-attachments/assets/7e50e873-2f20-46ca-9a0f-f418f1a28658" />
+<br>
+<img width="681" height="269" alt="image" src="https://github.com/user-attachments/assets/fa2b0135-c860-4802-b0d7-f2871f963bf4" />
