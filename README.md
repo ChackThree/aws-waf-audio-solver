@@ -32,6 +32,7 @@ elif len(response) > 3000:
 ```
 
 ## Changelog
+- [8/10/2025] : Changed default solutionType from audio > visual (~2x faster, less accuracy sometimes).
 - [8/10/2025] : Added solving time for logging.
 - [8/10/2025] : main.py modernized as a proper example file & supports both captcha types.
 - [8/10/2025] : waf_wrapper.py now supports both audio and visual captcha solutions.
