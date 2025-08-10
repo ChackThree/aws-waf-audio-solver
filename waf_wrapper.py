@@ -97,7 +97,7 @@ class WafSolver():
         print(Fore.MAGENTA + f"[Solver] Visual Target: {target}")
     return assets
 
-  def solveCaptcha(self, gokuProps, domain, locale="en-us", solutionType="audio", baseUrl=None):
+  def solveCaptcha(self, gokuProps, domain, locale="en-us", solutionType="visual", baseUrl=None):
     self.start = time.perf_counter()
     try:
       self.domain = domain.replace("www.", "").replace("https://", "").replace("/", "")
