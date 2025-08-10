@@ -1,2 +1,2 @@
 rnet
-coloram
+colorama
