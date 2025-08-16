@@ -39,8 +39,8 @@ elif choice == 2:
   token = solver.solveCaptcha(gokuProps, "huggingface.co", solutionType="visual")
 
 if token == None:
-  print(Fore.RED + "[Main] Could not solve, exiting...")
-  os._exit()
+  print(Fore.RED + "[Main] Could not solve, exiting..." + Fore.RESET)
+  os._exit(1)
 
 # Set the cookie
 
@@ -53,6 +53,6 @@ r = session.get("https://huggingface.co/join")
 response = r.text()
 
 if len(response) < 3000:
-  print(Fore.RED + "[Main] Blocked from HuggingFace")
+  print(Fore.RED + "[Main] Blocked from HuggingFace" + Fore.RESET)
 elif len(response) > 3000:
-  print(Fore.GREEN + "[Main] Allowed to access HuggingFace")
+  print(Fore.GREEN + "[Main] Allowed to access HuggingFace" + Fore.RESET)
