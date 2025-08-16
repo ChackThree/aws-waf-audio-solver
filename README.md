@@ -11,7 +11,12 @@ import cloudscraper
 from waf_wrapper import WafSolver
 
 session = cloudscraper.CloudScraper() # Use other bypassing client if you wish
-solver = WafSolver(logging=False) # ' logging ' is "True" by default
+
+# Initiate the WafSolver
+solver = WafSolver(logging=False)
+# ' logging ' is "True" by default
+# ' proxy ' is "None" by default
+# ' fails ' is "3" by default (for fatal errors only)
 
 # Send initial request to extract the gokuProps
 r = session.get("https://huggingface.co/join")
@@ -32,6 +37,7 @@ elif len(response) > 3000:
 ```
 
 ## Changelog
+- [8/16/2025] : Added proxy support, better logging & error handling for both scripts, define max fails (fatal errors).
 - [8/10/2025] : Changed default solutionType from audio > visual (~2x faster, less accuracy sometimes).
 - [8/10/2025] : Added solving time for logging.
 - [8/10/2025] : main.py modernized as a proper example file & supports both captcha types.
@@ -52,6 +58,6 @@ elif len(response) > 3000:
 
 ## Currently Bypassing on HuggingFace
 - As seen from main.py output
-<img width="528" height="229" alt="image" src="https://github.com/user-attachments/assets/7e50e873-2f20-46ca-9a0f-f418f1a28658" />
+<img width="528" height="229" alt="image" src="https://github.com/user-attachments/assets/09ee818d-460b-4429-a1b2-256fd93d1ffe" />
 <br>
 <img width="528" height="229" alt="image" src="https://github.com/user-attachments/assets/fa2b0135-c860-4802-b0d7-f2871f963bf4" />
