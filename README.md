@@ -46,8 +46,6 @@ elif len(response) > 3000:
 - [8/10/2025] : Changed from ``aws-waf-audio-solver`` to ``aws-waf-solver``.
 
 ## TODO
-- Proxy support.
-- Better error handling.
 - All around faster solving time.
 
 ## Notes
