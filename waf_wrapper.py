@@ -1,11 +1,31 @@
 import json, re, time
-from rnet import Impersonate, BlockingClient
+from rnet import Impersonate, BlockingClient, Proxy
 from colorama import Fore, init
 
 class WafSolver():
-  def __init__(self, logging=True):
-    self.session = BlockingClient(tls_info=True, impersonate=Impersonate.Firefox133)
+  def __init__(self, logging=True, proxy=None, fails=3):
     self.logging = logging
+    self.fails = fails
+    if proxy:
+      proxy = f"http://{proxy}"
+      self.session = BlockingClient(
+        tls_info=True, 
+        impersonate=Impersonate.Firefox133,
+        proxies=[
+          Proxy.http(proxy),
+          Proxy.https(proxy)
+        ]
+      )
+      ip = self.session.get("https://api.ipify.org").text()
+      if logging == True:
+        print(Fore.MAGENTA + f"[Solver] Using Proxy IP: {ip}")
+    else:
+      self.session = BlockingClient(
+        tls_info=True, 
+        impersonate=Impersonate.Firefox133
+      )
+      if logging == True:
+        print(Fore.MAGENTA + "[Solver] No Proxy Loaded")
     init()
 
   def getGokuProps(self, raw):
@@ -61,9 +81,12 @@ class WafSolver():
         data = response["problem"]
         assets = self.getAssets(data=data)
         solution = self.getSolution(assets)
+        if self.logging == True:
+          print(Fore.MAGENTA + f"[Solver] Solution: {solution}")
       else:
         if self.logging == True:
-          print(Fore.MAGENTA + "[Solver] Solved...")
+          #print(Fore.MAGENTA + "[Solver] Solved...")
+          pass #TODO: Rework
         return response["captcha_voucher"]
 
   def getToken(self, voucher):
@@ -99,28 +122,31 @@ class WafSolver():
 
   def solveCaptcha(self, gokuProps, domain, locale="en-us", solutionType="visual", baseUrl=None):
     self.start = time.perf_counter()
-    try:
-      self.domain = domain.replace("www.", "").replace("https://", "").replace("/", "")
-      self.locale = locale
-      self.solutionType = solutionType
-      if baseUrl is not None:
-        self.baseUrl = baseUrl
-      if self.baseUrl is None:
+    for n in range(self.fails):
+      try:
+        self.domain = domain.replace("www.", "").replace("https://", "").replace("/", "")
+        self.locale = locale
+        self.solutionType = solutionType
+        if baseUrl is not None:
+          self.baseUrl = baseUrl
+        if self.baseUrl is None:
+          if self.logging == True:
+            print(Fore.RED + "[Solver] Extract Goku Props first, or manually provide both the Goku Props and the Base Url." + Fore.RESET)
+          return None
+        assets = self.getAssets()
+        solution = self.getSolution(assets)
         if self.logging == True:
-          print("[Solver] Be sure to extract Goku Props first, or manually provide both the Goku Props and the Base Url.")
-        return None
-      assets = self.getAssets()
-      solution = self.getSolution(assets)
-      if self.logging == True:
-        print(Fore.MAGENTA + f"[Solver] Solution: {solution}")
-      voucher = self.verifyCaptcha(solution, gokuProps)
-      token = self.getToken(voucher)
-      total = self.end - self.start
-      if self.logging == True:
-        print(Fore.MAGENTA + f"[Solver] Solved in {total:.2f}s")
-      return token
-    except Exception as e:
-      #lazy error handling; temporary
-      if self.logging == True:
-        print(Fore.RED + f"[Solver] Fatal Error: {e}")
-      return None
+          print(Fore.MAGENTA + f"[Solver] Solution: {solution}")
+        voucher = self.verifyCaptcha(solution, gokuProps)
+        token = self.getToken(voucher)
+        total = self.end - self.start
+        if self.logging == True:
+          print(Fore.MAGENTA + f"[Solver] Solved in {total:.2f}s" + Fore.RESET)
+        return token
+      except Exception as e:
+        #lazy error handling; temporary
+        if self.logging == True:
+          print(Fore.RED + f"[Solver] Fatal Error: {e}" + Fore.RESET)
+        if n == (self.fails - 1):
+          print(Fore.RED + "[Solver] Maximum fails reached with an error or no valid solution." + Fore.RESET)
+          return None
