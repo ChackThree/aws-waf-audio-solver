@@ -56,6 +56,7 @@ elif len(response) > 3000:
 - More features & updates will be coming soon (check TODO).
 
 ## Currently Bypassing on HuggingFace
+- View test account [here](https://huggingface.co/Waltuh-White)
 - As seen from main.py output
 <img width="528" height="229" alt="image" src="https://github.com/user-attachments/assets/09ee818d-460b-4429-a1b2-256fd93d1ffe" />
 <br>
