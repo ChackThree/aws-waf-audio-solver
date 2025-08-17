@@ -37,7 +37,7 @@ elif len(response) > 3000:
 ```
 
 ## Changelog
-- [8/16/2025] : Added proxy support, better logging & error handling for both scripts, define max fails (fatal errors).
+- [8/16/2025] : Added proxy support, improved logging & error handling for both scripts, define max fails (fatal errors).
 - [8/10/2025] : Changed default solutionType from audio > visual (~2x faster, less accuracy sometimes).
 - [8/10/2025] : Added solving time for logging.
 - [8/10/2025] : main.py modernized as a proper example file & supports both captcha types.
